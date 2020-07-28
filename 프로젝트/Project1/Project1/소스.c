@@ -1,0 +1,213 @@
+#pragma warning(disable : 4996)
+#define MAX_LEN 100
+#include <stdio.h>
+#include<windows.h>
+#include <stdlib.h>   
+#include <string.h>
+
+
+
+//선택지 출력함수 정의
+int option();
+int human();
+
+// 여러가지 함수들 정의
+int num1;
+int num2;
+int age;
+char sex[10];
+char name[15];
+char key1[30], key2[30], key3[30], key4[30], key5[30];
+char gender;
+
+char* buffer;
+int size;
+int count;
+
+
+int main() {
+
+
+	//로고 출력
+	printf("-----------------------------------------------------------\n\n");
+	printf("        -------------------------------------------\n\n");
+	printf("           소개팅 프로그램에 오신 것을 환영합니다\n\n");
+	printf("        -------------------------------------------\n\n");
+	printf("-----------------------------------------------------------\n\n\n\n");
+	
+
+	//선택지 출력 함수 호출
+	option();
+
+
+	//선택지 입력받기.
+#pragma warning(suppress : 4996)
+	scanf("%d", &num1);
+
+
+	//선택지 입력 실행
+	if (num1 == 1) {
+
+		
+		human();
+
+
+	}
+	else if (num1 == 2) {
+		system("cls");
+		printf("원하시는 성별을 입력해 주세요 (1. 남성  2. 여성)\n\n");
+		scanf("%d", &num2);
+		if (num2 == 1) {
+			
+			FILE* fp = fopen("boys.txt", "r");    
+										
+			fseek(fp, 0, SEEK_END);   
+			size = ftell(fp);       
+
+			buffer = malloc(size + 1);   
+			memset(buffer, 0, size + 1);  
+
+			fseek(fp, 0, SEEK_SET);                
+			count = fread(buffer, size, 1, fp);    
+			system("cls");
+			printf("%s size: %d, count: %d\n", buffer, size, count);
+
+			fclose(fp);     
+
+			free(buffer);
+
+			system("PAUSE");
+			main();
+		}
+		else if (num2 == 2) {
+			FILE* fp = fopen("girls.txt", "r");
+
+			fseek(fp, 0, SEEK_END);
+			size = ftell(fp);
+
+			buffer = malloc(size + 1);
+			memset(buffer, 0, size + 1);
+
+			fseek(fp, 0, SEEK_SET);
+			count = fread(buffer, size, 1, fp);
+			system("cls");
+			printf("%s size: %d, count: %d\n", buffer, size, count);
+
+			fclose(fp);
+
+			free(buffer);
+
+			system("PAUSE");
+			main();
+		}
+	}
+	//txt파일 삭제
+	else if (num1 == 3) {
+		char boytxt[] = { "boys.txt" };
+		int nResult = remove(boytxt);
+
+		char girltxt[] = { "girls.txt" };
+		int kResult = remove(girltxt);
+	}
+	//종료
+	else if (num1 == 4) {
+		return 0;
+	}
+
+	//대기화면 실행
+	system("PAUSE");
+
+}
+
+//선택지 출력 함수
+int option(){
+	printf("  1. 자신의 인적사항 추가하기\n\n");
+	printf("  2. 이상형 찾기\n\n");
+	printf("  3. txt파일 삭제\n\n");
+	printf("  4. 종료하기 \n\n\n\n");
+
+	printf("  원하는 기능의 번호를 입력하세요\n\n\n\n\n");
+}
+
+//인적사항 받기 함수
+int human(){
+
+	//성별 받기
+	system("cls");
+	printf("성별을 선택해 주세요");
+	printf("\n\n\n    1. 남성    2. 여성\n\n\n");
+	scanf("%d", &gender);
+	system("cls");
+
+
+	//이름 입력받기
+	printf("이름을 입력하세요\n\n");
+	scanf("%s", &name);
+	system("cls");
+
+
+	//나이 입력받기
+	printf("나이를 입력하세요\n\n");
+	scanf("%d", &age);
+	system("cls");
+
+	//키워드 받기
+	printf("자신을 표현할 수 있는 키워드 5개를 입력하세요\n\n");
+	scanf("%s %s %s %s %s", &key1, &key2, &key3, &key4, &key5);
+	system("cls");
+	printf("인적사항 저장을 완료하였습니다.\n\n");
+
+	printf("이름 : %s\n", &name);
+	if (gender == 1) {
+		printf("성별 : 남성\n");
+		char *sex = "남성";
+		printf("키워드 : %s, %s, %s, %s, %s\n\n\n", &key1, &key2, &key3, &key4, &key5);
+
+		//실행시킨 프로그램 옆에 txt파일 생성
+		FILE* fp = fopen("boys.txt", "a+");
+		fprintf(fp, "%s %s\n", "이름은 : ", name);
+		fprintf(fp, "%s %s\n", "성별은 : ", sex);
+		fprintf(fp, "%s %d\n", "나이는 : ", age);
+		fprintf(fp, "%s %s, %s, %s, %s, %s\n\n", "키워드 : ", key1, key2, key3, key4, key5);
+		fclose(fp);
+
+		
+
+	}
+	else if (gender == 2) {
+		printf("성별 : 여성\n");
+		char *sex = "여성";
+		printf("키워드 : %s, %s, %s, %s, %s\n\n\n", &key1, &key2, &key3, &key4, &key5);
+
+		//실행시킨 프로그램 옆에 txt파일 생성
+		FILE* fp = fopen("girls.txt", "a+");
+		fprintf(fp, "%s %s\n", "이름은 : ", name);
+		fprintf(fp, "%s %s\n", "성별은 : ", sex);
+		fprintf(fp, "%s %d\n", "나이는 : ", age);
+		fprintf(fp, "%s %s, %s, %s, %s, %s\n\n", "키워드 : ", key1, key2, key3, key4, key5);
+		fclose(fp);
+
+		
+	}
+	
+
+	//메인화면으로 보내기
+	printf("5초 뒤 메인 화면으로 돌아갑니다.\n\n");
+	printf("      5\n\n");
+	Sleep(1000);
+	printf("      4\n\n");
+	Sleep(1000);
+	printf("      3\n\n");
+	Sleep(1000);
+	printf("      2\n\n");
+	Sleep(1000);
+	printf("      1\n\n");
+	Sleep(1000);
+	
+	system("cls");
+
+	main();
+}
+
+
+
